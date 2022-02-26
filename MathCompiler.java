@@ -18,10 +18,11 @@ public class MathCompiler {
     public MathCompiler(String input) {
         this.INPUT = input;
         CURRENT_CHAR = INPUT.charAt(TOKEN_IDX);
+        CURRENT_TOKEN = getNextToken();
     }
 
     public static void main(String[] args) {
-        var compiler = new MathCompiler("1 + 2 * 10 / 2");
+        var compiler = new MathCompiler("7 + 3 * (10 / (12 / (3 + 1) - 1))");
         System.out.println(compiler.start());
     }
 
@@ -103,7 +104,6 @@ public class MathCompiler {
     }
 
     private Integer expr() {
-        CURRENT_TOKEN = getNextToken();
         int result = terminal();
 
         while (CURRENT_TOKEN.isSubtraction() || CURRENT_TOKEN.isAddition()) {
@@ -126,17 +126,16 @@ public class MathCompiler {
 
     private int terminal() {
         int result = factor();
-        advanceTokenIdx();
         while (CURRENT_TOKEN.isDivision() || CURRENT_TOKEN.isMultiplication()) {
             var token = CURRENT_TOKEN;
             if (token.isMultiplication()) {
                 consumeToken(TokenLexes.MULTIPLICATION);
-                result *= terminal();
+                result *= factor();
             }
 
             if (token.isDivision()) {
                 consumeToken(TokenLexes.DIVISION);
-                result /= terminal();
+                result /= factor();
             }
         }
 
@@ -145,6 +144,12 @@ public class MathCompiler {
 
     private int factor() {
         var token = CURRENT_TOKEN;
+        if (token.isLeftBracket()) {
+            consumeToken(TokenLexes.LEFT_BRACKET);
+            var result = expr();
+            consumeToken(TokenLexes.RIGHT_BRACKET);
+            return result;
+        }
         consumeToken(TokenLexes.INTEGER);
         return token.getIntValue();
     }
