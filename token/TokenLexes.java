@@ -1,4 +1,6 @@
-enum TokenLexes {
+package token;
+
+public enum TokenLexes {
     INTEGER,
     PLUS,
     MINUS,

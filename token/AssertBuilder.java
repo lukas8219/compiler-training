@@ -1,3 +1,5 @@
+package token;
+
 public class AssertBuilder {
 
     private AssertBuilder() {

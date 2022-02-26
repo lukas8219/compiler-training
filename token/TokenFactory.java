@@ -1,3 +1,5 @@
+package token;
+
 public class TokenFactory {
 
     public static final char PLUS_SIGN = '+';
