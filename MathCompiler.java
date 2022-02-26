@@ -12,8 +12,6 @@ public class MathCompiler {
     private TokenFactory.Token CURRENT_TOKEN = null;
     private Character CURRENT_CHAR;
 
-    //Lexer transforms the Input into a Stream of TOKENS
-    //Parser reads the Tokens and transforms into Output
 
     public MathCompiler(String input) {
         this.INPUT = input;
@@ -22,8 +20,15 @@ public class MathCompiler {
     }
 
     public static void main(String[] args) {
-        var compiler = new MathCompiler("7 + 3 * (10 / (12 / (3 + 1) - 1))");
-        System.out.println(compiler.start());
+        var one = new MathCompiler("7 + 3 * (10 / (12 / (3 + 1) - 1))").start();
+        var two = new MathCompiler(" 3").start();
+        var three = new MathCompiler("14 + 2 * 3 - 6 / 2").start();
+        var four = new MathCompiler("7 + 3 * (10 / (12 / (3 + 1) - 1)) / (2 + 3) - 5 - 3 + (8)").start();
+
+        AssertBuilder.assertThat(one).isEqualTo(22);
+        AssertBuilder.assertThat(two).isEqualTo(3);
+        AssertBuilder.assertThat(three).isEqualTo(17);
+        AssertBuilder.assertThat(four).isEqualTo(10);
     }
 
     private void advanceTokenIdx() {
