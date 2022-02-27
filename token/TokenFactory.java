@@ -45,43 +45,22 @@ public class TokenFactory {
         return new TokenFactory.Token(TokenLexes.EOF, null);
     }
 
-    record Token(TokenLexes token, Object value) {
+    public static Token fromLexe(TokenLexes operation) {
+        return switch (operation) {
+            case DIVISION -> DivisionToken();
+            case MULTIPLICATION -> MultiplicationToken();
+            case PLUS -> PlusToken();
+            case MINUS -> MinusToken();
+            default -> throw new RuntimeException("Parsing error");
+        };
+    }
+
+    public record Token(TokenLexes type, Object value) {
 
         public Integer getIntValue() {
             return (Integer) value;
         }
 
-        public boolean isLeftBracket() {
-            return this.token == TokenLexes.LEFT_BRACKET;
-        }
-
-        public boolean isRightBracket() {
-            return this.token == TokenLexes.RIGHT_BRACKET;
-        }
-
-        public boolean isOperation() {
-            return isAddition() || isDivision() || isMultiplication() || isSubtraction();
-        }
-
-        public boolean isSameTypeAs(TokenLexes inputLexe) {
-            return this.token.equals(inputLexe);
-        }
-
-        public boolean isMultiplication() {
-            return this.token == TokenLexes.MULTIPLICATION;
-        }
-
-        public boolean isDivision() {
-            return this.token == TokenLexes.DIVISION;
-        }
-
-        public boolean isAddition() {
-            return this.token == TokenLexes.PLUS;
-        }
-
-        public boolean isSubtraction() {
-            return this.token == TokenLexes.MINUS;
-        }
     }
 
 }

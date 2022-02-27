@@ -108,15 +108,15 @@ public class MathCompiler {
     private Integer expr() {
         int result = terminal();
 
-        while (CURRENT_TOKEN.isSubtraction() || CURRENT_TOKEN.isAddition()) {
+        while (CURRENT_TOKEN.type().isSubtraction() || CURRENT_TOKEN.type().isAddition()) {
 
             var token = CURRENT_TOKEN;
-            if (token.isAddition()) {
+            if (token.type().isAddition()) {
                 consumeToken(TokenLexes.PLUS);
                 result += terminal();
             }
 
-            if (token.isSubtraction()) {
+            if (token.type().isSubtraction()) {
                 consumeToken(TokenLexes.MINUS);
                 result -= terminal();
             }
@@ -128,14 +128,14 @@ public class MathCompiler {
 
     private int terminal() {
         int result = factor();
-        while (CURRENT_TOKEN.isDivision() || CURRENT_TOKEN.isMultiplication()) {
+        while (CURRENT_TOKEN.type().isDivision() || CURRENT_TOKEN.type().isMultiplication()) {
             var token = CURRENT_TOKEN;
-            if (token.isMultiplication()) {
+            if (token.type().isMultiplication()) {
                 consumeToken(TokenLexes.MULTIPLICATION);
                 result *= factor();
             }
 
-            if (token.isDivision()) {
+            if (token.type().isDivision()) {
                 consumeToken(TokenLexes.DIVISION);
                 result /= factor();
             }
@@ -146,7 +146,7 @@ public class MathCompiler {
 
     private int factor() {
         var token = CURRENT_TOKEN;
-        if (token.isLeftBracket()) {
+        if (token.type().isLeftBracket()) {
             consumeToken(TokenLexes.LEFT_BRACKET);
             var result = expr();
             consumeToken(TokenLexes.RIGHT_BRACKET);
@@ -157,7 +157,7 @@ public class MathCompiler {
     }
 
     private void consumeToken(TokenLexes integer) {
-        if (CURRENT_TOKEN.isSameTypeAs(integer)) {
+        if (CURRENT_TOKEN.type().isSameTypeAs(integer)) {
             CURRENT_TOKEN = getNextToken();
             return;
         }
