@@ -63,6 +63,9 @@ public class MathLexer implements Iterator<TokenFactory.Token>, Iterable<TokenFa
                 tokens.add(TokenFactory.RightBracket());
             }
         }
+
+        tokens.add(TokenFactory.EOF());
+
         return tokens;
     }
 
