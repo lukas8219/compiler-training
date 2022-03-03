@@ -1,15 +1,17 @@
-import token.AssertBuilder;
+import token.Assertions;
 
 public class MathParserTest {
 
     public static void assertParser(String expression, Integer value){
-        AssertBuilder.assertThat(new MathParser(new MathLexer(expression)).calculate()).isEqualTo(value);
+        Assertions.assertThat(new MathParser(new MathLexer(expression)).calculate()).isEqualTo(value);
     }
 
     public static void main(String[] args) {
-        testAdditionAndSubtraction();
-        testMultiplicationAndDivision();
-        testExpressionWithParenthesis();
+        Assertions.executeAssertion(() -> {
+            testAdditionAndSubtraction();
+            testMultiplicationAndDivision();
+            testExpressionWithParenthesis();
+        });
     }
 
     private static void testExpressionWithParenthesis() {

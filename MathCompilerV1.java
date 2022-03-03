@@ -1,4 +1,4 @@
-import token.AssertBuilder;
+import token.Assertions;
 import token.TokenFactory;
 import token.TokenLexes;
 
@@ -22,10 +22,12 @@ public class MathCompilerV1 {
         var three = new MathCompilerV1("14 + 2 * 3 - 6 / 2").start();
         var four = new MathCompilerV1("7 + 3 * (10 / (12 / (3 + 1) - 1)) / (2 + 3) - 5 - 3 + (8)").start();
 
-        AssertBuilder.assertThat(one).isEqualTo(22);
-        AssertBuilder.assertThat(two).isEqualTo(3);
-        AssertBuilder.assertThat(three).isEqualTo(17);
-        AssertBuilder.assertThat(four).isEqualTo(10);
+        Assertions.executeAssertion(() -> {
+            Assertions.assertThat(one).isEqualTo(22);
+            Assertions.assertThat(two).isEqualTo(3);
+            Assertions.assertThat(three).isEqualTo(17);
+            Assertions.assertThat(four).isEqualTo(10);
+        });
     }
 
     private void advanceTokenIdx() {

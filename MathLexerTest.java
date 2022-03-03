@@ -1,4 +1,4 @@
-import token.AssertBuilder;
+import token.Assertions;
 
 import java.util.HashMap;
 
@@ -21,7 +21,7 @@ public class MathLexerTest {
         int count = 0;
         while (lexer.hasNext()) {
             var result = tokenEntry.get(count);
-            AssertBuilder.assertThat(lexer.next().value()).isEqualTo(result);
+            Assertions.assertThat(lexer.next().value()).isEqualTo(result);
             count++;
         }
 
