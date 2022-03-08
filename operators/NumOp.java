@@ -4,15 +4,15 @@ import token.TokenFactory;
 
 public class NumOp extends AST {
 
-    private final Number value;
+    private final Integer value;
 
     public NumOp(TokenFactory.Token token,
-                 Number value) {
+                 Integer value) {
         super(token);
         this.value = value;
     }
 
-    public Number getValue() {
+    public Integer getValue() {
         return value;
     }
 }

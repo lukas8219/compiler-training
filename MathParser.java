@@ -1,3 +1,6 @@
+import operators.AST;
+import operators.ASTFactory;
+import operators.BinaryOp;
 import token.TokenFactory;
 import token.TokenLexes;
 
@@ -17,47 +20,49 @@ public class MathParser {
         this.CURRENT_TOKEN = TOKENS.next();
     }
 
-    private Integer TERMINAL_EXPRESSION() {
+    private AST TERMINAL_EXPRESSION() {
         var result = number();
 
         while (CURRENT_TOKEN.type().isMultiplication() || CURRENT_TOKEN.type().isDivision()) {
+            var token = CURRENT_TOKEN;
             if (CURRENT_TOKEN.type().isMultiplication()) {
                 eat(TokenLexes.MULTIPLICATION);
-                result *= number();
             }
 
             if (CURRENT_TOKEN.type().isDivision()) {
                 eat(TokenLexes.DIVISION);
-                result /= number();
             }
+
+            result = new BinaryOp(token, result, number());
         }
 
         return result;
     }
 
-    public int calculate() {
+    public AST parseAST() {
         return expression();
     }
 
-    private Integer expression() {
-        int result = TERMINAL_EXPRESSION();
+    private AST expression() {
+        var result = TERMINAL_EXPRESSION();
 
         while (CURRENT_TOKEN.type().isSubtraction() || CURRENT_TOKEN.type().isAddition()) {
+            var token = CURRENT_TOKEN;
             if (CURRENT_TOKEN.type().isAddition()) {
                 eat(TokenLexes.PLUS);
-                result += TERMINAL_EXPRESSION();
             }
 
             if (CURRENT_TOKEN.type().isSubtraction()) {
                 eat(TokenLexes.MINUS);
-                result -= TERMINAL_EXPRESSION();
             }
+
+            result = new BinaryOp(token, result, TERMINAL_EXPRESSION());
         }
 
         return result;
     }
 
-    private int number() {
+    private AST number() {
         var token = CURRENT_TOKEN;
         if (token.type().isLeftBracket()) {
             eat(TokenLexes.LEFT_BRACKET);
@@ -66,7 +71,7 @@ public class MathParser {
             return result;
         } else if (token.type().isSameTypeAs(TokenLexes.INTEGER)) {
             eat(TokenLexes.INTEGER);
-            return token.getIntValue();
+            return ASTFactory.NumberOperator(token.getIntValue());
         }
         throw new RuntimeException("Invalid input for number");
     }

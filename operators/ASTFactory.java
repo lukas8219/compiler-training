@@ -13,8 +13,8 @@ public class ASTFactory {
     }
 
     public static BinaryOp BinaryOperator(TokenLexes operation,
-                                   TokenFactory.Token right,
-                                   TokenFactory.Token left) {
+                                   AST right,
+                                   AST left) {
         return new BinaryOp(TokenFactory.fromLexe(operation), right, left);
     }
 }

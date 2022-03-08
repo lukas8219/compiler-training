@@ -1,5 +1,7 @@
 package token;
 
+import java.util.function.BinaryOperator;
+
 public class TokenFactory {
 
     public static final char PLUS_SIGN = '+';
@@ -55,12 +57,20 @@ public class TokenFactory {
         };
     }
 
-    public record Token(TokenLexes type, Object value) {
+    public static BinaryOperator<Integer> getForToken(TokenLexes token) {
+        return switch (token) {
+            case PLUS -> Integer::sum;
+            case MINUS -> (x, y) -> x - y;
+            case DIVISION -> (x, y) -> x / y;
+            case MULTIPLICATION -> (x, y) -> x * y;
+            default -> throw new RuntimeException("Not an binary operator");
+        };
+    }
 
+    public record Token(TokenLexes type, Object value) {
         public Integer getIntValue() {
             return (Integer) value;
         }
-
     }
 
 }
